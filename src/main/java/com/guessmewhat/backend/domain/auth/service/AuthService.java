@@ -6,7 +6,7 @@ import com.guessmewhat.backend.domain.auth.service.response.JsonWebTokenResponse
 import com.guessmewhat.backend.domain.auth.service.response.RefreshTokenResponse;
 import com.guessmewhat.backend.domain.user.domain.entity.UserEntity;
 import com.guessmewhat.backend.domain.user.domain.enums.UserRole;
-import com.guessmewhat.backend.domain.user.domain.repository.jpa.UserJpaRepository;
+import com.guessmewhat.backend.domain.user.domain.repository.jpa.UserRepository;
 import com.guessmewhat.backend.domain.user.exception.PasswordWrongException;
 import com.guessmewhat.backend.domain.user.exception.UserExistException;
 import com.guessmewhat.backend.domain.user.exception.UserNotFoundException;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final UserJpaRepository userJpaRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder encoder;
     private final JwtProvider jwtProvider;
 
@@ -29,7 +29,7 @@ public class AuthService {
         if (checkUserByEmail(request.email())){
             throw UserExistException.EXCEPTION;
         }
-        userJpaRepository.save(UserEntity.builder()
+        userRepository.save(UserEntity.builder()
                 .email(request.email())
                 .nickname(request.nickname())
                 .password(encoder.encode(request.password()))
@@ -42,7 +42,7 @@ public class AuthService {
         if(!checkUserByEmail(request.email())){
             throw UserNotFoundException.EXCEPTION;
         }
-        String userPassword = userJpaRepository.getByEmail(request.email()).getPassword();
+        String userPassword = userRepository.getByEmail(request.email()).getPassword();
         if (!encoder.matches(request.password(), userPassword))
             throw PasswordWrongException.EXCEPTION;
         return JsonWebTokenResponse.builder()
@@ -59,7 +59,7 @@ public class AuthService {
     }
 
     public boolean checkUserByEmail(String email) {
-        return userJpaRepository.findByEmail(email).isPresent();
+        return userRepository.findByEmail(email).isPresent();
     }
 
 }

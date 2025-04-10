@@ -1,6 +1,6 @@
 package com.guessmewhat.backend.global.security.jwt;
 
-import com.guessmewhat.backend.domain.user.domain.repository.jpa.UserJpaRepository;
+import com.guessmewhat.backend.domain.user.domain.repository.jpa.UserRepository;
 import com.guessmewhat.backend.domain.user.dto.User;
 import com.guessmewhat.backend.domain.user.exception.UserNotFoundException;
 import com.guessmewhat.backend.global.security.auth.CustomUserDetails;
@@ -21,7 +21,7 @@ import org.springframework.util.StringUtils;
 @RequiredArgsConstructor
 public class JwtExtract {
 
-    private final UserJpaRepository userRepository;
+    private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
     private final User userDTO;
 
