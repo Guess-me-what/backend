@@ -1,0 +1,20 @@
+package com.guessmewhat.backend.global.common.response;
+
+import lombok.Getter;
+import org.springframework.http.HttpStatus;
+
+@Getter
+public class BaseResponseData<T> extends BaseResponse {
+
+    private final T data;
+
+    private BaseResponseData(HttpStatus status, String message, T data) {
+        super(status.value(), message);
+        this.data = data;
+    }
+
+    public static <T> BaseResponseData<T> ok(String message, T data) {
+        return new BaseResponseData<>(HttpStatus.OK, message, data);
+    }
+
+}
