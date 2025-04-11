@@ -1,6 +1,7 @@
 package com.guessmewhat.backend.domain.quiz.application;
 
 import com.guessmewhat.backend.domain.quiz.application.dto.request.QuizCreateRequest;
+import com.guessmewhat.backend.domain.quiz.application.dto.response.QuizSetInfoResponse;
 import com.guessmewhat.backend.domain.quiz.domain.Quiz;
 import com.guessmewhat.backend.domain.quiz.domain.QuizSet;
 import com.guessmewhat.backend.domain.quiz.domain.repository.QuizSetRepository;
@@ -27,6 +28,18 @@ public class QuizService {
         quizSetRepository.save(quizSet);
         return code;
     }
+
+    public QuizSetInfoResponse getQuizSetInfo(String code) {
+        QuizSet quizSet = quizSetRepository.findByCode(code)
+                .orElseThrow(() -> new IllegalArgumentException("해당 코드의 퀴즈가 존재하지 않습니다."));
+
+        return new QuizSetInfoResponse(
+                quizSet.getNickname(),
+                quizSet.getIntroduction(),
+                quizSet.getExpirationDate()
+        );
+    }
+
 
     private String generateCode() {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
