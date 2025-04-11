@@ -17,4 +17,8 @@ public class BaseResponseData<T> extends BaseResponse {
         return new BaseResponseData<>(HttpStatus.OK, message, data);
     }
 
+    public static <T> BaseResponseData<T> created(String message, T data) {
+        return new BaseResponseData<>(HttpStatus.CREATED, message, data);
+    }
+
 }
