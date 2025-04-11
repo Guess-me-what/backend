@@ -5,8 +5,9 @@ import com.guessmewhat.backend.domain.quiz.application.dto.request.QuizCreateReq
 import com.guessmewhat.backend.domain.quiz.application.dto.request.QuizSubmitRequest;
 import com.guessmewhat.backend.domain.quiz.application.dto.response.QuizSetInfoResponse;
 import com.guessmewhat.backend.domain.quiz.application.dto.response.QuizSubmitResultResponse;
+import com.guessmewhat.backend.global.common.response.BaseResponseData;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,24 +18,24 @@ public class QuizController {
     private final QuizService quizService;
 
     @PostMapping("/generate")
-    public ResponseEntity<String> createQuiz(@RequestBody QuizCreateRequest request) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public BaseResponseData<String> createQuiz(@RequestBody QuizCreateRequest request) {
         String code = quizService.generateQuizSet(request);
-        return ResponseEntity.ok(code);
+        return BaseResponseData.created("quiz generated successfully", code);
     }
 
     @GetMapping("/{code}")
-    public ResponseEntity<QuizSetInfoResponse> getQuizSetInfo(@PathVariable String code) {
+    public BaseResponseData<QuizSetInfoResponse> getQuizSetInfo(@PathVariable String code) {
         QuizSetInfoResponse response = quizService.getQuizSetInfo(code);
-        return ResponseEntity.ok(response);
+        return BaseResponseData.ok("quiz set retrieved successfully", response);
     }
 
     @PostMapping("/{code}/submit")
-    public ResponseEntity<QuizSubmitResultResponse> submitQuiz(
+    public BaseResponseData<QuizSubmitResultResponse> submitQuiz(
             @PathVariable String code,
             @RequestBody QuizSubmitRequest request
     ) {
         QuizSubmitResultResponse response = quizService.submitQuiz(code, request);
-        return ResponseEntity.ok(response);
+        return BaseResponseData.ok("quiz submitted successfully", response);
     }
-
 }
