@@ -2,12 +2,10 @@ package com.guessmewhat.backend.domain.quiz.presentation;
 
 import com.guessmewhat.backend.domain.quiz.application.QuizService;
 import com.guessmewhat.backend.domain.quiz.application.dto.request.QuizCreateRequest;
+import com.guessmewhat.backend.domain.quiz.application.dto.response.QuizSetInfoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/quiz")
@@ -21,4 +19,11 @@ public class QuizController {
         String code = quizService.generateQuizSet(request);
         return ResponseEntity.ok(code);
     }
+
+    @GetMapping("/{code}")
+    public ResponseEntity<QuizSetInfoResponse> getQuizSetInfo(@PathVariable String code) {
+        QuizSetInfoResponse response = quizService.getQuizSetInfo(code);
+        return ResponseEntity.ok(response);
+    }
+
 }
