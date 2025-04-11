@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,9 +24,9 @@ public class QuizSet {
 
     private String introduction;
 
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
-    private LocalDateTime expirationDate;
+    private LocalDate expirationDate;
 
     @OneToMany(mappedBy = "quizSet", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Quiz> quizzes = new ArrayList<>();
@@ -35,7 +35,7 @@ public class QuizSet {
         this.code = code;
         this.nickname = nickname;
         this.introduction = introduction;
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = LocalDate.now();
         this.expirationDate = this.createdAt.plusDays(7);
         this.quizzes = quizzes;
         this.quizzes.forEach(q -> q.setQuizSet(this));
