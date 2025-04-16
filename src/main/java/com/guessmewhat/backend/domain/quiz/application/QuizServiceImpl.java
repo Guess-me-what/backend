@@ -6,7 +6,6 @@ import com.guessmewhat.backend.domain.quiz.application.dto.response.QuizSetInfoR
 import com.guessmewhat.backend.domain.quiz.application.dto.response.QuizSubmitResultResponse;
 import com.guessmewhat.backend.domain.quiz.domain.Quiz;
 import com.guessmewhat.backend.domain.quiz.domain.QuizSet;
-import com.guessmewhat.backend.domain.quiz.domain.repository.QuizRepository;
 import com.guessmewhat.backend.domain.quiz.domain.repository.QuizSetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,6 @@ import java.util.*;
 public class QuizServiceImpl implements QuizService {
 
     private final QuizSetRepository quizSetRepository;
-    private final QuizRepository quizRepository;
 
     @Override
     @Transactional
@@ -110,4 +108,3 @@ public class QuizServiceImpl implements QuizService {
         return sb.toString();
     }
 }
-
