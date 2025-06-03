@@ -3,6 +3,7 @@ package com.guessmewhat.backend.domain.quiz.presentation;
 import com.guessmewhat.backend.domain.quiz.application.QuizService;
 import com.guessmewhat.backend.domain.quiz.application.dto.request.QuizCreateRequest;
 import com.guessmewhat.backend.domain.quiz.application.dto.request.QuizSubmitRequest;
+import com.guessmewhat.backend.domain.quiz.application.dto.response.QuizGenerateResponse;
 import com.guessmewhat.backend.domain.quiz.application.dto.response.QuizSetInfoResponse;
 import com.guessmewhat.backend.domain.quiz.application.dto.response.QuizSubmitResultResponse;
 import com.guessmewhat.backend.global.common.response.BaseResponseData;
@@ -19,9 +20,9 @@ public class QuizController {
 
     @PostMapping("/generate")
     @ResponseStatus(HttpStatus.CREATED)
-    public BaseResponseData<String> createQuiz(@RequestBody QuizCreateRequest request) {
-        String code = quizService.generateQuizSet(request);
-        return BaseResponseData.created("quiz generated successfully", code);
+    public BaseResponseData<QuizGenerateResponse> createQuiz(@RequestBody QuizCreateRequest request) {
+        QuizGenerateResponse response = quizService.generateQuizSet(request);
+        return BaseResponseData.created("quiz generated successfully", response);
     }
 
     @GetMapping("/{code}")

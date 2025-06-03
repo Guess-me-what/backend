@@ -2,6 +2,7 @@ package com.guessmewhat.backend.domain.quiz.application;
 
 import com.guessmewhat.backend.domain.quiz.application.dto.request.QuizCreateRequest;
 import com.guessmewhat.backend.domain.quiz.application.dto.request.QuizSubmitRequest;
+import com.guessmewhat.backend.domain.quiz.application.dto.response.QuizGenerateResponse;
 import com.guessmewhat.backend.domain.quiz.application.dto.response.QuizSetInfoResponse;
 import com.guessmewhat.backend.domain.quiz.application.dto.response.QuizSubmitResultResponse;
 import com.guessmewhat.backend.domain.quiz.domain.Quiz;
@@ -21,7 +22,7 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     @Transactional
-    public String generateQuizSet(QuizCreateRequest request) {
+    public QuizGenerateResponse generateQuizSet(QuizCreateRequest request) {
         String code = generateCode();
 
         List<Quiz> quizzes = request.questions().stream()
@@ -30,7 +31,11 @@ public class QuizServiceImpl implements QuizService {
 
         QuizSet quizSet = new QuizSet(code, request.nickname(), request.introduction(), quizzes);
         quizSetRepository.save(quizSet);
-        return code;
+
+        return new QuizGenerateResponse(
+                quizSet.getCode(),
+                quizSet.getExpirationDate()
+        );
     }
 
     @Override
