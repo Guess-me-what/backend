@@ -7,6 +7,7 @@ import lombok.Builder;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public record JsonWebTokenResponse (
 
+    String nickname,
     String accessToken,
     String refreshToken
 

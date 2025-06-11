@@ -42,10 +42,15 @@ public class AuthService {
         if(!checkUserByEmail(request.email())){
             throw UserNotFoundException.EXCEPTION;
         }
+
         String userPassword = userRepository.getByEmail(request.email()).getPassword();
+        UserEntity user = userRepository.getByEmail(request.email());
+
         if (!encoder.matches(request.password(), userPassword))
             throw PasswordWrongException.EXCEPTION;
+
         return JsonWebTokenResponse.builder()
+                .nickname(user.getNickname())
                 .accessToken(jwtProvider.generateAccessToken(request.email(), UserRole.USER))
                 .refreshToken(jwtProvider.generateRefreshToken(request.email(), UserRole.USER))
                 .build();
