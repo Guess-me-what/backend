@@ -3,6 +3,7 @@ package com.guessmewhat.backend.domain.quiz.application;
 import com.guessmewhat.backend.domain.quiz.application.dto.request.QuizCreateRequest;
 import com.guessmewhat.backend.domain.quiz.application.dto.request.QuizSubmitRequest;
 import com.guessmewhat.backend.domain.quiz.application.dto.response.QuizGenerateResponse;
+import com.guessmewhat.backend.domain.quiz.application.dto.response.QuizQuestionsResponse;
 import com.guessmewhat.backend.domain.quiz.application.dto.response.QuizSetInfoResponse;
 import com.guessmewhat.backend.domain.quiz.application.dto.response.QuizSubmitResultResponse;
 import com.guessmewhat.backend.domain.quiz.domain.Quiz;
@@ -50,6 +51,22 @@ public class QuizServiceImpl implements QuizService {
                 quizSet.getExpirationDate()
         );
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public QuizQuestionsResponse getQuizList(String code) {
+        QuizSet quizSet = quizSetRepository.findByCode(code)
+                .orElseThrow(() -> new IllegalArgumentException("해당 코드의 퀴즈가 존재하지 않습니다."));
+
+        List<QuizQuestionsResponse.QuizQuestion> questions = new ArrayList<>();
+        int number = 1;
+        for (Quiz quiz : quizSet.getQuizzes()) {
+            questions.add(new QuizQuestionsResponse.QuizQuestion(number++, quiz.getQuestion()));
+        }
+
+        return new QuizQuestionsResponse(questions);
+    }
+
 
     @Override
     @Transactional
