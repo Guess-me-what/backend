@@ -20,7 +20,7 @@ import org.mockito.MockitoAnnotations;
 import java.time.LocalDate;
 import java.util.List;
 
-class QuizControllerUnitTest {
+class QuizControllerTest {
 
     @Mock
     private QuizService quizService;
